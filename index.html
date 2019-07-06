@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./libraries/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container container-fluid">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Live Feed
+                <button class="btn btn-default" id="" onclick="doGetDevicesInfo()">Devices</button>
+                <button class="btn btn-default" id="startCamera1" onclick="doStartCamera(this)">Stream 1</button>
+                <button class="btn btn-default" id="startCamera2" onclick="doStartCamera(this)">Stream 2</button>
+                <button class="btn btn-default" id="startCamera3" onclick="doStartCamera(this)">Stream 3</button>
+                <button class="btn btn-default" id="startAllCameras" onclick="doStartCamera(this)">Stream All</button>
+                <button class="btn btn-default" id="stopAllCameras" onclick="doStopAllCameras(this)">Stop All</button>
+                <label for="streamWidth">Width:</label> <input name="streamWidth" id="streamWidth" type="text"
+                    placeholder="width" size="3" maxlength="3" value="300" onchange="doChangeStreamWidth(this)" />
+                <label for="streamHeight">Height:</label> <input name="streamHeight" id="streamHeight" type="text"
+                    placeholder="height" size="3" maxlength="3" value="300" onchange="doChangeStreamHeight(this)" />
+            </div>
+            <div class="panel-body">
+                <div id="players" style="display:none">
+                    <video id="camera1" controls autoplay></video>
+                    <video id="camera2" controls autoplay></video>
+                    <video id="camera3" controls autoplay></video>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Canvases (to Capture Snapshot)
+                <label for="snapShotWidth">Width:</label> <input name="snapShotWidth" id="snapShotWidth" type="text"
+                    placeholder="width" size="3" maxlength="3" value="300" onchange="doChangeSnapShotWidth(this)" />
+                <label for="snapShotHeight">Height:</label> <input name="snapShotHeight" id="snapShotHeight" type="text"
+                    placeholder="height" size="3" maxlength="3" value="300" onchange="doChangeSnapShotHeight(this)" />
+                <button class="btn btn-default" id="captureAll" onclick="doCaptureSnapShot(this)">Snap All Cameras</button>
+                <button class="btn btn-default" id="showCaptureArea" onclick="doShowCaptureArea(this)">Show SnapShots</button>
+            </div>
+            <div class="panel-body">
+                <div id="allSnapShots">
+                    <div class="col col-xs-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <button class="btn btn-default" id="capture1" onclick="doCaptureSnapShot(this)">Camera 1</button>
+                                <button class="btn btn-default" id="invert1" onclick="doInvert(this)">Invert</button>
+                                <button class="btn btn-default" id="grayscale1" onclick="doGrayscale(this)">Grayscale</button>
+                                <button class="btn btn-default" id="revert1" onclick="doRevert(this)">Revert</button>
+                                <div>Brightness:<input id="brightness1" type="range" min="0" max="20" value="0" class="slider" oninput="doBrightness(this)" /></div>
+                                <div>Contrast:<input id="contrast1" type="range" min="0" max="20" value="0" class="slider" oninput="doContrast(this)" /></div>
+                            </div>
+                            <canvas id="canvas1"></canvas>
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-xs-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <button class="btn btn-default" id="capture2" onclick="doCaptureSnapShot(this)">Camera 2</button>
+                                <button class="btn btn-default" id="invert2" onclick="doInvert(this)">Invert</button>
+                                <button class="btn btn-default" id="grayscale2" onclick="doGrayscale(this)">Grayscale</button>
+                                <button class="btn btn-default" id="revert2" onclick="doRevert(this)">Revert</button>
+                                <div>Brightness:<input id="brightness2" type="range" min="0" max="20" value="0" class="slider" oninput="doBrightness(this)" /></div>
+                                <div>Contrast:<input id="contrast2" type="range" min="0" max="20" value="0" class="slider" oninput="doContrast(this)" /></div>
+                            </div>
+                            <canvas id="canvas2"></canvas>
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-xs-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <button class="btn btn-default" id="capture3" onclick="doCaptureSnapShot(this)">Camera 3</button>
+                                <button class="btn btn-default" id="invert3" onclick="doInvert(this)">Invert</button>
+                                <button class="btn btn-default" id="grayscale3" onclick="doGrayscale(this)">Grayscale</button>
+                                <button class="btn btn-default" id="revert3" onclick="doRevert(this)">Revert</button>
+                                <div>Brightness:<input id="brightness3" type="range" min="0" max="20" value="0" class="slider" oninput="doBrightness(this)" /></div>
+                                <div>Contrast:<input id="contrast3" type="range" min="0" max="20" value="0" class="slider" oninput="doContrast(this)" /></div>
+                            </div>
+                            <canvas id="canvas3"></canvas>
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
+                    <div>Contrast:<input id="contrastAll" type="range" min="0" max="20" value="0" class="slider"
+                            oninput="doContrast(this)" /></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Work Area
+                <button class="btn btn-default" id="merge1and2" onclick="doMergeSnapShots(this)">Camera 1&2</button>
+                <button class="btn btn-default" id="merge2and3" onclick="doMergeSnapShots(this)">Camera 2&3</button>
+                <button class="btn btn-default" id="merge1and3" onclick="doMergeSnapShots(this)">Camera 1&3</button>
+                <button class="btn btn-default" id="showWorkingCanvas" onclick="doShowWorkingCanvas(this)">Show</button>
+            </div>
+            <div class="panel-body">
+                <canvas id="workingCanvas"></canvas>
+                <div>Mov Right One:<input id="mover" type="range" min="-900" max="300" value="0" class="slider" oninput="doMove(this)" /></div>
+                <button class="btn btn-default" id="startingMergePosition" onclick="doStartingMergePosition(this)">Starting Position</button>
+                <button class="btn btn-default" id="autoMerge" onclick="doAutoMergeSnapShots(this)">Auto Merge</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-xs-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Sum: <span id="sumVal"></span>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="summedCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-xs-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Diff: <progress id="numDiff" value="0" max="200"></progress><span id="numDiffVal"></span>
+                    </div>
+                    <div class="panel-body">
+                        <canvas id="differenceCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Difference Vs Overlap
+                        <button class="btn btn-default" id="differenceVsOverlap" onclick="doShowDifferenceVsOverlapChart(this)">Diff Vs Overlap</button>
+                    </div>
+                    <div class="panel-body">
+                        <canvas style="display:none" id="differenceVsOverlapCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./libraries/pixelmatch.js"></script>
+<script src="./libraries/chart.min.js"></script>
+<script src="index.html.event.handlers.js"></script>
+<script src="index.js"></script>
+
+</html>

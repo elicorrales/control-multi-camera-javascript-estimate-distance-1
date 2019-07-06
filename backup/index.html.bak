@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<head> </head>
+<body>
+    <button onclick="doGetDevicesInfo()">Enable</button>
+    <button id="startCamera1" onclick="doStartCamera(this)">Camera 1</button>
+    <button id="startCamera2" onclick="doStartCamera(this)">Camera 2</button>
+    <button id="startCamera3" onclick="doStartCamera(this)">Camera 3</button>
+    <br/>
+    <video id="camera1" controls autoplay></video>
+    <video id="camera2" controls autoplay></video>
+    <video id="camera3" controls autoplay></video>
+</body>
+<script src="index.js"></script>
+</html>
